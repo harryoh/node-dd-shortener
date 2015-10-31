@@ -10,7 +10,7 @@ path = require 'path'
 module.exports = (app) ->
 
   # Insert routes below
-  app.use '/api/things', require './api/thing'
+  app.use '/api/1.0/url', require './api/url'
   app.use '/api/users', require './api/user'
   app.use '/auth', require './auth'
 
