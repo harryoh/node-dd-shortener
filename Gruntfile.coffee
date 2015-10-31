@@ -629,7 +629,7 @@ module.exports = (grunt) ->
         'concurrent:test'
         'injector'
         'autoprefixer'
-        'karma'
+#        'karma'
       ]
 
     else if target is 'e2e'
