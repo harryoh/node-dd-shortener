@@ -8,6 +8,9 @@ do ->
   ddurl.shorten = (longUrl, callback) ->
     return callback 400, new Error 'Bad Request'  unless validUrl.isUri longUrl
 
+    # Todo:
+    # Check same longurl.
+
     Url.create
       'longUrl': longUrl
     , (err, url) ->
