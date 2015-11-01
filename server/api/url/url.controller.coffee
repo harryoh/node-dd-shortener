@@ -19,11 +19,11 @@ exports.show = (req, res) ->
 
 # shorten a new url in the DB.
 exports.shorten = (req, res) ->
-  hrstart = process.hrtime();
+  hrstart = process.hrtime()
   ddurl.shorten req.body.longUrl, (statusCode, err, result) ->
     return res.status(statusCode).send err  if err
     return handleError res  unless result
-    hrend = process.hrtime(hrstart);
+    hrend = process.hrtime(hrstart)
 
     _.merge result,
       'executionTime':
