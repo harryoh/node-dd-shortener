@@ -13,7 +13,7 @@
       <form class="form-inline" data-ng-submit="shorten()">
         <div class="form-group form-group-sm">
           <label class="sr-only" for="url">Input URL included http:// or https://</label>
-          <input type="url" class="form-control" id="url" data-ng-model="longUrl" placeholder="Input URL included http:// or https://">
+          <input type="text" class="form-control" id="url" data-ng-model="longUrl" placeholder="Input URL included http:// or https://" autofocus>
         </div>
         <button type="submit" class="btn btn-default btn-sm">Shorten URL</button>
       </form>
@@ -30,6 +30,12 @@
         <input type="text" readonly="readonly" data-ng-model="shortUrl" class="result" onclick="this.select();">
       </div>
     </div>
+  </div>
+</div>
+
+<div class="container" data-ng-show="message">
+  <div class="row">
+    <div class="text-center">{{message}}</div>
   </div>
 </div>
 

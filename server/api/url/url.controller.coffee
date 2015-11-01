@@ -2,6 +2,7 @@
 
 _ = require 'lodash'
 Url = require './url.model'
+ddurl = require '../../components/ddurl'
 
 # Get list of urls
 exports.index = (req, res) ->
@@ -16,8 +17,24 @@ exports.show = (req, res) ->
     return res.status(404).send 'Not Found'  if not url
     res.json url
 
-# Creates a new url in the DB.
-exports.create = (req, res) ->
+# shorten a new url in the DB.
+exports.shorten = (req, res) ->
+  hrstart = process.hrtime();
+  ddurl.shorten req.body.longUrl, (statusCode, err, result) ->
+    return res.status(statusCode).send err  if err
+    return handleError res  unless result
+    hrend = process.hrtime(hrstart);
+
+    _.merge result,
+      'executionTime':
+        'sec': hrend[0]
+        'ms': hrend[1]
+
+    res.status(statusCode).json result
+
+# expand url in the DB.
+exports.expand = (req, res) ->
+  return res.status(200).send('expand').end()
   Url.create req.body, (err, url) ->
     return handleError res, err  if err
     res.status(201).json url
