@@ -31,6 +31,8 @@ exports.shorten = (req, res) ->
         'sec': hrend[0]
         'ms': hrend[1]
 
+    delete result.shortenId
+
     res.status(statusCode).json result
 
 # expand url in the DB.

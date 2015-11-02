@@ -18,6 +18,7 @@ do ->
       result =
         'longUrl': url.longUrl
         'shortenId': url.shortenId
+        'createdAt': url.createdAt
 
       callback 201, null, result
 
