@@ -19,6 +19,7 @@ mongoose.connection.on 'error', (err) ->
 
 # Populate DB with sample data
 require './config/seed'  if config.seedDB
+require './config/dummy'
 
 # Setup server
 app = express()
