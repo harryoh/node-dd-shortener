@@ -32,15 +32,22 @@ exports.shorten = (req, res) ->
         'ms': hrend[1]
 
     delete result.shortenId
-
     res.status(statusCode).json result
 
 # expand url in the DB.
 exports.expand = (req, res) ->
-  return res.status(200).send('expand').end()
-  Url.create req.body, (err, url) ->
-    return handleError res, err  if err
-    res.status(201).json url
+  hrstart = process.hrtime()
+  ddurl.expand req.query.shortUrl, (statusCode, err, result) ->
+    return res.status(statusCode).send err  if err
+    return handleError res  unless result
+    hrend = process.hrtime(hrstart)
+    _.merge result,
+      'executionTime':
+        'sec': hrend[0]
+        'ms': hrend[1]
+
+    delete result.shortenId
+    res.status(statusCode).json result
 
 # Updates an existing url in the DB.
 exports.update = (req, res) ->
