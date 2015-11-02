@@ -17,7 +17,7 @@ do ->
       return callback 500, err  if err
       result =
         'longUrl': url.longUrl
-        'shortUrl': url.shortUrl
+        'shortenId': url.shortenId
 
       callback 201, null, result
 

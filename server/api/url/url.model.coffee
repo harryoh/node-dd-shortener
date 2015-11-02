@@ -2,11 +2,12 @@
 
 mongoose = require 'mongoose'
 UrlCounter = require './urlCounter.model'
+config = require '../../config/environment'
 Schema = mongoose.Schema
 
 UrlSchema = new Schema
-  shortUrl: String
   longUrl: String
+  shortenId: String
   clicked:
     type: Number
     default: 0
@@ -14,7 +15,10 @@ UrlSchema = new Schema
     type: Date
     default: Date.now
 
-UrlSchema.index { 'shortUrl': 1 }, { unique: true }
+UrlSchema.index { 'shortenId': 1 }, { unique: true }
+
+Hashids = require 'hashids'
+hashids = new Hashids(config.secrets.session, 6);
 
 UrlSchema.pre 'save', (next) ->
   _this = this
@@ -23,7 +27,7 @@ UrlSchema.pre 'save', (next) ->
   , $inc: { seq: 1 }
   , (err, counter) ->
     return next err  if err
-    _this.shortUrl = counter.seq.toString(36)
+    _this.shortenId = hashids.encode counter.seq
     next()
 
 module.exports = mongoose.model 'Url', UrlSchema

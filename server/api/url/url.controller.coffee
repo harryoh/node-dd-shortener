@@ -26,6 +26,7 @@ exports.shorten = (req, res) ->
     hrend = process.hrtime(hrstart)
 
     _.merge result,
+      'shortUrl': "http://#{req.get('host')}/#{result.shortenId}"
       'executionTime':
         'sec': hrend[0]
         'ms': hrend[1]
