@@ -35,6 +35,7 @@ Content-Type: application/json
 
 **Response**
 
+
 #### Expand a short URL
 - **Endpoint**: `/api/1.0/url`
 - **Method**: `GET`
@@ -47,18 +48,14 @@ GET http://url.5004.pe.kr/api/1.0/url?shortUrl=http://url.5004.pe.kr/A5tamk
 
 **Response**
 
-#### URL List
-- **Endpoint**: `/api/1.0/list`
-- **Method**: `GET`
 
-#### Short URL analytics
-- **Endpoint**: `/api/1.0/url`
+#### URL analytics
+- **Endpoint**: `/api/1.0/history`
 - **Method**: `GET`
-- **Parameter**: `shortUrl=<string>`
 
 **Request**  
 ```
-GET http://url.5004.pe.kr/api/1.0/url?shortUrl=http://url.5004.pe.kr/A5tamk
+GET http://url.5004.pe.kr/api/1.0/history
 ```
 
 **Response**
