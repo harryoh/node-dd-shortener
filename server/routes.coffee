@@ -18,6 +18,8 @@ module.exports = (app) ->
   app.get /^\/([0-9a-zA-Z\+/]{6})$/, (req, res, next) ->
     ddurl.expand req.params[0], (err, result) ->
       return next(err)  if err
+      return res.status(404).send 'Not found URL'  unless result
+
       res.redirect 301, result.longUrl
 
   # All undefined asset or api routes should return a 404

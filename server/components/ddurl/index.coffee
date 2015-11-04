@@ -10,6 +10,8 @@ do ->
       'longUrl': longUrl
     , (err, url) ->
       return callback err  if err
+      return callback null  unless url
+
       result =
         'longUrl': url.longUrl
         'shortenId': url.shortenId
@@ -22,6 +24,7 @@ do ->
       'shortenId': shortenId
     , (err, url) ->
       return callback err  if err
+      return callback null  unless url
 
       result =
         'longUrl': url.longUrl

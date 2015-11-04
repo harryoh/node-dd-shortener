@@ -28,16 +28,17 @@ exports.shorten = (req, res) ->
   else
     longUrl = req.body.longUrl
   ###
-
   longUrl = req.body.longUrl
+
   if not validUrl.isUri longUrl
     return res.status(400).send 'Bad Request'
 
   hrstart = process.hrtime()
   ddurl.shorten longUrl, (err, result) ->
     return handleError res, err  if err
-    hrend = process.hrtime(hrstart)
+    return res.status(404).send 'Not found URL'  unless result
 
+    hrend = process.hrtime(hrstart)
     _.merge result,
       'shortUrl': "http://#{req.get('host')}/#{result.shortenId}"
       'executionTime':
@@ -58,6 +59,8 @@ exports.expand = (req, res) ->
   hrstart = process.hrtime()
   ddurl.expand shortenId, (err, result) ->
     return handleError res, err  if err
+    return res.status(404).send 'Not found URL'  unless result
+
     hrend = process.hrtime(hrstart)
     _.merge result,
       'executionTime':
