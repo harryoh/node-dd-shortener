@@ -11,6 +11,7 @@ async = require 'async'
 
 errors = require './components/errors'
 ddurl = require './components/ddurl'
+logger = require './components/logger'
 config = require './config/environment'
 
 if config.useRedis
@@ -23,10 +24,7 @@ if config.useRedis
 
 module.exports = (app) ->
 
-  # Insert routes below
   app.use '/api/1.0/url', require './api/url'
-  #app.use '/api/users', require './api/user'
-  #app.use '/auth', require './auth'
 
   app.get /^\/([0-9a-zA-Z\+/]{6})$/, (req, res, next) ->
     async.waterfall [
@@ -48,7 +46,7 @@ module.exports = (app) ->
     ], (err, longUrl) ->
       return next err  if err
       return res.status(404).send 'Not found URL'  unless longUrl
-
+      logger.increase req.params[0]
       res.redirect 301, longUrl
 
   # All undefined asset or api routes should return a 404
