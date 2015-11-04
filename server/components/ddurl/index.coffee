@@ -21,6 +21,8 @@ do ->
     UrlModel.findOne
       'shortenId': shortenId
     , (err, url) ->
+      return callback err  if err
+
       result =
         'longUrl': url.longUrl
         'shortenId': url.shortenId

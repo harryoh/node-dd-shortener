@@ -66,10 +66,6 @@ exports.expand = (req, res) ->
 
     res.status(200).json result
 
-exports.redirect = (req, res) ->
-  console.log req.params[0]
-  res.status(200).end()
-
 # Updates an existing url in the DB.
 exports.update = (req, res) ->
   delete req.body._id  if req.body._id

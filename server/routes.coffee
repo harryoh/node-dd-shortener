@@ -15,12 +15,9 @@ module.exports = (app) ->
   #app.use '/api/users', require './api/user'
   #app.use '/auth', require './auth'
 
-#  app.get(/^\/([\w=]+)$/, function (req, res, next){
-#  app.get(/^[0-9a-zA-Z\+/]{6,}) (req, res) ->
-  #app.get /^\/([\w=]+)$/, (req, res, next) ->
-  app.get /^\/([0-9a-zA-Z\+/]{6})$/, (req, res) ->
+  app.get /^\/([0-9a-zA-Z\+/]{6})$/, (req, res, next) ->
     ddurl.expand req.params[0], (err, result) ->
-      return next()  if err
+      return next(err)  if err
       res.redirect 301, result.longUrl
 
   # All undefined asset or api routes should return a 404
