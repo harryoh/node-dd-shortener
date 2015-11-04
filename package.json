@@ -21,6 +21,7 @@
     "morgan": "~1.5.3",
     "passport": "~0.2.2",
     "passport-local": "~1.0.0",
+    "redis": "^2.3.0",
     "serve-favicon": "~2.2.1",
     "valid-url": "^1.0.9"
   },
