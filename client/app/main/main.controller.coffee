@@ -17,3 +17,4 @@ angular.module 'nodeDdShortenerApp'
 
     .error (e) ->
       $scope.message = "Error: #{e}"
+      delete $scope.shortUrl

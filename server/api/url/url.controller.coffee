@@ -1,28 +1,41 @@
 'use strict'
 
 _ = require 'lodash'
-Url = require './url.model'
+UrlModel = require '../../api/url/url.model'
+url = require 'url'
+validUrl = require 'valid-url'
 ddurl = require '../../components/ddurl'
 
 # Get list of urls
 exports.index = (req, res) ->
-  Url.find (err, urls) ->
+  UrlModel.find (err, urls) ->
     return handleError res, err  if err
     res.status(200).json urls
 
 # Get a single url
 exports.show = (req, res) ->
-  Url.findById req.params.id, (err, url) ->
+  UrlModel.findById req.params.id, (err, url) ->
     return handleError res, err  if err
     return res.status(404).send 'Not Found'  if not url
     res.json url
 
 # shorten a new url in the DB.
 exports.shorten = (req, res) ->
+  ###
+  parse = url.parse req.body.longUrl
+  if not parse.protocol
+    longUrl = "http://#{parse.href}"
+  else
+    longUrl = req.body.longUrl
+  ###
+
+  longUrl = req.body.longUrl
+  if not validUrl.isUri longUrl
+    return res.status(400).send 'Bad Request'
+
   hrstart = process.hrtime()
-  ddurl.shorten req.body.longUrl, (statusCode, err, result) ->
-    return res.status(statusCode).send err  if err
-    return handleError res  unless result
+  ddurl.shorten longUrl, (err, result) ->
+    return handleError res, err  if err
     hrend = process.hrtime(hrstart)
 
     _.merge result,
@@ -32,27 +45,35 @@ exports.shorten = (req, res) ->
         'ms': hrend[1]
 
     delete result.shortenId
-    res.status(statusCode).json result
+    res.status(201).json result
 
 # expand url in the DB.
 exports.expand = (req, res) ->
+  if not validUrl.isUri req.query.shortUrl
+    return res.status(400).send 'Bad Request'
+
+  parse = url.parse req.query.shortUrl, true
+  shortenId = parse.path.substring(1)
+
   hrstart = process.hrtime()
-  ddurl.expand req.query.shortUrl, (statusCode, err, result) ->
-    return res.status(statusCode).send err  if err
-    return handleError res  unless result
+  ddurl.expand shortenId, (err, result) ->
+    return handleError res, err  if err
     hrend = process.hrtime(hrstart)
     _.merge result,
       'executionTime':
         'sec': hrend[0]
         'ms': hrend[1]
 
-    delete result.shortenId
-    res.status(statusCode).json result
+    res.status(200).json result
+
+exports.redirect = (req, res) ->
+  console.log req.params[0]
+  res.status(200).end()
 
 # Updates an existing url in the DB.
 exports.update = (req, res) ->
   delete req.body._id  if req.body._id
-  Url.findById req.params.id, (err, url) ->
+  UrlModel.findById req.params.id, (err, url) ->
     return handleError res, err  if err
     return res.status(404).send 'Not Found'  if not url
     updated = _.merge url, req.body
@@ -62,7 +83,7 @@ exports.update = (req, res) ->
 
 # Deletes a url from the DB.
 exports.destroy = (req, res) ->
-  Url.findById req.params.id, (err, url) ->
+  UrlModel.findById req.params.id, (err, url) ->
     return handleError res, err  if err
     return res.status(404).send 'Not Found'  if not url
     url.remove (err) ->
