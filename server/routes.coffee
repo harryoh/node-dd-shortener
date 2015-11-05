@@ -12,7 +12,7 @@ lru = require 'lru-cache'
 
 errors = require './components/errors'
 ddurl = require './components/ddurl'
-logger = require './components/logger'
+writer = require './components/writer'
 config = require './config/environment'
 
 if config.useRedis
@@ -60,7 +60,7 @@ module.exports = (app) ->
     ], (err, longUrl) ->
       return next err  if err
       return res.status(404).send 'Not found URL'  unless longUrl
-      logger.increase req.params[0]
+      writer.increase req.params[0]
       res.redirect 301, longUrl
 
   # All undefined asset or api routes should return a 404
