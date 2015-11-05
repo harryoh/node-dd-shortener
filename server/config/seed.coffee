@@ -7,6 +7,16 @@ to disable, edit config/environment/index.js, and set `seedDB: false`
 
 User = require '../api/user/user.model'
 UrlCounter = require '../api/url/urlCounter.model'
+config = require './environment'
+
+UrlCounter.count (err, length) ->
+  if not length
+    UrlCounter.create
+      _id: "urlid"
+    , ->
+      console.log 'init url counter'
+
+return  unless config.seedDB
 
 User.count (err, length) ->
   if not length
@@ -24,10 +34,3 @@ User.count (err, length) ->
         password: 'admin'
       , ->
         console.log 'finished populating users'
-
-UrlCounter.count (err, length) ->
-  if not length
-    UrlCounter.create
-      _id: "urlid"
-    , ->
-      console.log 'init url counter'

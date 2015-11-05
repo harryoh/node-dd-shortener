@@ -3,7 +3,9 @@
 
 async = require 'async'
 Url = require '../api/url/url.model'
+config = require './environment'
 
+return  unless config.seedDB
 Url.count (err, length) ->
 
   if not length
