@@ -38,6 +38,22 @@ $ NODE_ENV=production npm start
 $ ab -n 1000 http://localhost:9000/JyegOp
 ```
 
+Cache Configuration
+
+```
+# server/config/environment/index.coffee
+
+.
+.
+useRedis: true
+
+useLru: true
+.
+.
+
+
+```
+
 * Requests per second
 
 |     |  No Cache  |    LRU     |   Redis    | LRU + Redis |
