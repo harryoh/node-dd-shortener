@@ -29,6 +29,7 @@ if config.useLru
 module.exports = (app) ->
 
   app.use '/api/1.0/url', require './api/url'
+  app.use '/api/1.0/history', require './api/history'
 
   app.get /^\/([0-9a-zA-Z\+/]{6})$/, (req, res, next) ->
     async.waterfall [

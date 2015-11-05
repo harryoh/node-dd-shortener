@@ -5,6 +5,9 @@ angular.module 'nodeDdShortenerApp'
   $scope.menu = [
     title: 'Home'
     link: '/'
+  ,
+    title: 'History'
+    link: '/history'
   ]
   $scope.isCollapsed = true
   $scope.isLoggedIn = Auth.isLoggedIn
