@@ -12,6 +12,7 @@ bodyParser = require 'body-parser'
 methodOverride = require 'method-override'
 cookieParser = require 'cookie-parser'
 errorHandler = require 'errorhandler'
+useragent = require 'express-useragent'
 path = require 'path'
 config = require './environment'
 passport = require 'passport'
@@ -27,6 +28,7 @@ module.exports = (app) ->
   app.use bodyParser.json()
   app.use methodOverride()
   app.use cookieParser()
+  app.use useragent.express()
   app.use passport.initialize()
 
   if 'production' is env

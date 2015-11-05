@@ -5,14 +5,14 @@ Main application routes
 'use strict'
 
 path = require 'path'
-#cache = require('express-redis-cache')({ expire: 3600 })
+request = require 'request'
 redis = require 'redis'
 async = require 'async'
 lru = require 'lru-cache'
 
 errors = require './components/errors'
 ddurl = require './components/ddurl'
-writer = require './components/writer'
+logger = require './components/logger'
 config = require './config/environment'
 
 if config.useRedis
@@ -60,7 +60,7 @@ module.exports = (app) ->
     ], (err, longUrl) ->
       return next err  if err
       return res.status(404).send 'Not found URL'  unless longUrl
-      writer.increase req.params[0]
+      logger req
       res.redirect 301, longUrl
 
   # All undefined asset or api routes should return a 404
