@@ -34,7 +34,6 @@ module.exports = (app) ->
     async.waterfall [
       (callback) ->
         return callback null, null  unless lruCache
-        console.log "LRU: #{lruCache.get req.params[0]}"
         callback null, lruCache.get req.params[0] || null
 
       (longUrl, callback) ->
@@ -42,8 +41,6 @@ module.exports = (app) ->
           return callback null, longUrl
 
         cache.get req.params[0], (err, longUrl) ->
-          console.log "Redis: #{longUrl}"
-          console.log 'Store LRU'  if lruCache
           lruCache.set req.params[0], longUrl  if lruCache
           callback err, longUrl
 
@@ -53,10 +50,8 @@ module.exports = (app) ->
         ddurl.expand req.params[0], (err, result) ->
           return callback null, null  unless result
 
-          console.log 'Store LRU'  if lruCache
           lruCache.set req.params[0], result.longUrl  if lruCache
           if cache and cacheStatus
-            console.log 'Store Redis'
             cache.set req.params[0], result.longUrl, (err) ->
               callback err, result.longUrl
           else
