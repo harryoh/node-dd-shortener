@@ -18,7 +18,7 @@ UrlSchema = new Schema
 UrlSchema.index { 'shortenId': 1 }, { unique: true }
 
 Hashids = require 'hashids'
-hashids = new Hashids(config.secrets.session, 6);
+hashids = new Hashids(config.secrets.session, 6)
 
 UrlSchema.pre 'save', (next) ->
   _this = this
