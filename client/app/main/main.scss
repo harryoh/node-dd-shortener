@@ -25,7 +25,7 @@
 .body {
   &.container {
     text-align: center;
-    padding-top: 50px;
+    padding-top: 30px;
 
     .result {
       margin: 15px;
@@ -37,6 +37,11 @@
   #url {
     min-width: 250px;
   }
+}
+
+.url-list {
+  padding-top: 40px;
+  max-width: 600px;
 }
 
 .message {

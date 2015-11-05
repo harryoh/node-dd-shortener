@@ -1,16 +1,21 @@
 'use strict'
 
 _ = require 'lodash'
-UrlModel = require '../../api/url/url.model'
 url = require 'url'
+UrlModel = require './url.model'
 validUrl = require 'valid-url'
 ddurl = require '../../components/ddurl'
 
 # Get list of urls
-exports.index = (req, res) ->
-  UrlModel.find (err, urls) ->
+exports.list = (req, res) ->
+  UrlModel.count (err, length) ->
     return handleError res, err  if err
-    res.status(200).json urls
+
+    result = {total: length}
+    query = UrlModel.find().sort({createdAt: -1}).limit(20)
+    query.exec (err, urls) ->
+      return handleError res, err  if err
+      res.status(200).json _.merge result, {urls: urls}
 
 # Get a single url
 exports.show = (req, res) ->
@@ -21,13 +26,6 @@ exports.show = (req, res) ->
 
 # shorten a new url in the DB.
 exports.shorten = (req, res) ->
-  ###
-  parse = url.parse req.body.longUrl
-  if not parse.protocol
-    longUrl = "http://#{parse.href}"
-  else
-    longUrl = req.body.longUrl
-  ###
   longUrl = req.body.longUrl
 
   if not validUrl.isUri longUrl
@@ -54,7 +52,7 @@ exports.expand = (req, res) ->
     return res.status(400).send 'Bad Request'
 
   parse = url.parse req.query.shortUrl, true
-  shortenId = parse.path.substring(1)
+  shortenId = parse.path.substr 1
 
   hrstart = process.hrtime()
   ddurl.expand shortenId, (err, result) ->

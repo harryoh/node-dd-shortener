@@ -16,6 +16,7 @@ UrlSchema = new Schema
     default: Date.now
 
 UrlSchema.index { 'shortenId': 1 }, { unique: true }
+UrlSchema.index { 'createdAt': -1 }
 
 Hashids = require 'hashids'
 hashids = new Hashids(config.secrets.session, 6)
