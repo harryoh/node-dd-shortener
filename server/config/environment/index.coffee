@@ -23,6 +23,8 @@ all =
 
   useRedis: true
 
+  useLru: true
+
   # Secret for session, you will want to change this and make it an environment variable
   secrets:
     session: 'node-dd-shortener-secret'

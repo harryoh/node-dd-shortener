@@ -8,6 +8,7 @@ path = require 'path'
 #cache = require('express-redis-cache')({ expire: 3600 })
 redis = require 'redis'
 async = require 'async'
+lru = require 'lru-cache'
 
 errors = require './components/errors'
 ddurl = require './components/ddurl'
@@ -22,6 +23,9 @@ if config.useRedis
     console.info 'Connected redis server.'
     cacheStatus = true
 
+if config.useLru
+  lruCache = lru { max: 100, maxAge: 1000 * 60 * 60 }
+
 module.exports = (app) ->
 
   app.use '/api/1.0/url', require './api/url'
@@ -29,9 +33,18 @@ module.exports = (app) ->
   app.get /^\/([0-9a-zA-Z\+/]{6})$/, (req, res, next) ->
     async.waterfall [
       (callback) ->
-        return callback null, null  if not cache or not cacheStatus
+        return callback null, null  unless lruCache
+        console.log "LRU: #{lruCache.get req.params[0]}"
+        callback null, lruCache.get req.params[0] || null
+
+      (longUrl, callback) ->
+        if longUrl or not cache or not cacheStatus
+          return callback null, longUrl
 
         cache.get req.params[0], (err, longUrl) ->
+          console.log "Redis: #{longUrl}"
+          console.log 'Store LRU'  if lruCache
+          lruCache.set req.params[0], longUrl  if lruCache
           callback err, longUrl
 
       (longUrl, callback) ->
@@ -39,9 +52,15 @@ module.exports = (app) ->
 
         ddurl.expand req.params[0], (err, result) ->
           return callback null, null  unless result
-          return callback err, result.longUrl  if not cache or not cacheStatus
-          cache.set req.params[0], result.longUrl, (err) ->
-            callback err, result.longUrl
+
+          console.log 'Store LRU'  if lruCache
+          lruCache.set req.params[0], result.longUrl  if lruCache
+          if cache and cacheStatus
+            console.log 'Store Redis'
+            cache.set req.params[0], result.longUrl, (err) ->
+              callback err, result.longUrl
+          else
+            return callback err, result.longUrl
 
     ], (err, longUrl) ->
       return next err  if err
