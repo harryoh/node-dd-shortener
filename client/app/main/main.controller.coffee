@@ -20,6 +20,8 @@ angular.module 'nodeDdShortenerApp'
         createdAt: moment().format()
         clicked: 0
 
+      delete $scope.longUrl
+
     .error (e) ->
       $scope.message = "Error: #{e}"
       delete $scope.shortUrl
