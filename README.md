@@ -1,7 +1,8 @@
-# DD URL Shortener [![Build Status](https://travis-ci.org/harryoh/node-dd-shortener.svg?branch=master)](http://travis-ci.org/harryoh/node-dd-shortener)
-
+# DD URL Shortener
 URL Shortener using NodeJS.  
 This project was started from [generator-coffee-fullstack](https://github.com/harryoh/generator-coffee-fullstack).
+
+master: [![Build Status](https://travis-ci.org/harryoh/node-dd-shortener.svg?branch=master)](http://travis-ci.org/harryoh/node-dd-shortener) develop: [![Build Status](https://travis-ci.org/harryoh/node-dd-shortener.svg?branch=develop)](http://travis-ci.org/harryoh/node-dd-shortener)
 
 #### Install Environment
 ```
