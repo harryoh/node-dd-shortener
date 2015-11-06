@@ -3,8 +3,11 @@
 _ = require 'lodash'
 url = require 'url'
 UrlModel = require './url.model'
-validUrl = require 'valid-url'
 ddurl = require '../../components/ddurl'
+
+_checkUrl = (url) ->
+  regexp = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi
+  return regexp.test url
 
 # Get list of urls
 exports.list = (req, res) ->
@@ -26,9 +29,13 @@ exports.show = (req, res) ->
 
 # shorten a new url in the DB.
 exports.shorten = (req, res) ->
-  longUrl = req.body.longUrl
+  parse = url.parse req.body.longUrl
+  if not parse.protocol
+    longUrl = "http://#{parse.href}"
+  else
+    longUrl = req.body.longUrl
 
-  if not validUrl.isUri longUrl
+  if not _checkUrl longUrl
     return res.status(400).send 'Bad Request'
 
   hrstart = process.hrtime()
@@ -48,7 +55,7 @@ exports.shorten = (req, res) ->
 
 # expand url in the DB.
 exports.expand = (req, res) ->
-  if not validUrl.isUri req.query.shortUrl
+  if not _checkUrl.isUri req.query.shortUrl
     return res.status(400).send 'Bad Request'
 
   parse = url.parse req.query.shortUrl, true
