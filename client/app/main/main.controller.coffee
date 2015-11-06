@@ -16,7 +16,7 @@ angular.module 'nodeDdShortenerApp'
 
       $scope.urls.unshift
         shortenId: data.shortUrl.split(/[\/ ]+/).pop()
-        longUrl: $scope.longUrl
+        longUrl: data.longUrl
         createdAt: moment().format()
         clicked: 0
 
