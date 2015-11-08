@@ -61,7 +61,9 @@
         </tr>
       </tbody>
     </table>
-    <div style="text-align:center">...</div>
+  </div>
+  <div style="text-align:center">
+    <uib-pagination total-items="totalUrl" ng-model="currentPage" ng-change="getList()" items-per-page="pagePerNumber" max-size="6" class="pagination-sm" boundary-links="true" rotate="false"></uib-pagination>
   </div>
 </div>
 

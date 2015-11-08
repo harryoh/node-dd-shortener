@@ -10,7 +10,7 @@
     "angular-resource": "~1.4.*",
     "angular-cookies": "~1.4.*",
     "angular-sanitize": "~1.4.*",
-    "angular-bootstrap": "~0.13.0",
+    "angular-bootstrap": "~0.14.0",
     "font-awesome": ">=4.1.0",
     "lodash": "~3.9.3",
     "angular-ui-router": "~0.2.10",
