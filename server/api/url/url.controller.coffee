@@ -6,6 +6,7 @@ UrlModel = require './url.model'
 ddurl = require '../../components/ddurl'
 
 _checkUrl = (url) ->
+  return false  unless url
   regexp = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi
   return regexp.test url
 
@@ -14,8 +15,14 @@ exports.list = (req, res) ->
   UrlModel.count (err, length) ->
     return handleError res, err  if err
 
+    page = (req.query.page || 1) - 1
+    return handleError res, new Error 'Wrong page parameter'  if page < 0
+
+    pagePerNumber = req.query.pagePerNumber || 20
     result = {total: length}
-    query = UrlModel.find().sort({createdAt: -1}).limit(20)
+    query = UrlModel.find().sort({createdAt: -1})
+      .skip(page * pagePerNumber)
+      .limit(pagePerNumber)
     query.exec (err, urls) ->
       return handleError res, err  if err
       res.status(200).json _.merge result, {urls: urls}
@@ -55,7 +62,7 @@ exports.shorten = (req, res) ->
 
 # expand url in the DB.
 exports.expand = (req, res) ->
-  if not _checkUrl.isUri req.query.shortUrl
+  if not _checkUrl req.query.shortUrl
     return res.status(400).send 'Bad Request'
 
   parse = url.parse req.query.shortUrl, true
