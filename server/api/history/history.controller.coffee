@@ -14,5 +14,29 @@ exports.list = (req, res) ->
       return handleError res, err  if err
       res.status(200).json _.merge result, {history: history}
 
+exports.created = (req, res) ->
+###  MONGO Query
+db.getCollection('urls').aggregate([
+    {
+        $match: {
+            createdAt: {
+                $gte: ISODate("2015-11-01T00:00:00.000Z"),
+                $lt: ISODate("2015-11-16T00:00:00.000Z")
+            }
+        }
+    },
+    {
+        $group: {
+        _id: {
+            year: {$year: "$createdAt"},
+            month: {$month: "$createdAt"},
+            dayOfMonth: {$dayOfMonth: "$createdAt"}
+        },
+        count: {$sum: 1}
+    }
+}])
+###
+  res.status(200).end()
+
 handleError = (res, err) ->
   res.status(500).send err
