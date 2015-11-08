@@ -26,6 +26,18 @@ angular.module 'nodeDdShortenerApp'
       $scope.message = "Error: #{e}"
       delete $scope.shortUrl
 
+  $scope.currentPage = 1
+  $scope.pagePerNumber = 20
+  $scope.getList = ->
+    $http.get '/api/1.0/url/list',
+      params:
+        page: $scope.currentPage
+        pagePerNumber: $scope.pagePerNumber
+    .success (data, status) ->
+      return  unless data
+      $scope.totalUrl = data.total
+      $scope.urls = data.urls
+
   $http.get '/api/1.0/url/list'
   .success (data, status) ->
     return  unless data
