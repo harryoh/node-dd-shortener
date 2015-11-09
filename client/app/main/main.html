@@ -50,6 +50,7 @@
           <th class="long-url">Long URL</th>
           <th class="created">Created</th>
           <th class="clicks">Clicks</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -58,6 +59,7 @@
           <td><a href="{{data.longUrl}}" target="_blank">{{data.longUrl}}</a></td>
           <td>{{data.createdAt | fromNow}}</td>
           <td>{{data.clicked | number}}</td>
+          <td><a href="{{host}}/{{data.shortenId}}/detail">Detail</a></td>
         </tr>
       </tbody>
     </table>
