@@ -10,6 +10,16 @@
   <div class="row">
     <div class="col-sm-6 created">
       <label class="control-label">Created</label>
+      <div class="row" align="text-align:center;">
+        <table>
+          <tr data-ng-repeat="item in createdList">
+            <td style="min-width:100px">
+              {{item._id.year}}-{{item._id.month}}-{{item._id.dayOfMonth}}
+            </td>
+            <td>{{item.count | number}} urls</td>
+          </tr>
+        </table>
+      </div>
     </div>
     <div class="col-sm-6 browsers">
       <label class="control-label">Browsers</label>
