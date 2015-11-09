@@ -61,17 +61,16 @@ exports.detail = (req, res) ->
       res.status(200).json _.merge result, {history: history}
 
 exports.clicks = (req, res) ->
-  Logger.aggregate [{
-    $match:
-      shortenId: req.params.shortenId
-  }, {  
-    $group:
+  Logger.aggregate [
+    { $match: shortenId: req.params.shortenId }
+    { $group:
       _id:
         year: $year: "$createdAt"
         month: $month: "$createdAt"
         dayOfMonth: $dayOfMonth: "$createdAt"
       count: $sum: 1
-  }], (err, result) ->
+    }
+  ], (err, result) ->
     return handleError res, err  if err
     res.status(200).json result
 
