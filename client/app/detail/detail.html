@@ -9,14 +9,14 @@
 <div class="body container">
   <div class="row">
     <div class="col-sm-6 created">
-      <label class="control-label">Created</label>
+      <label class="control-label">Clicks</label>
       <div class="row">
         <table>
-          <tr data-ng-repeat="item in createdList">
+          <tr data-ng-repeat="item in clickList">
             <td style="min-width:100px">
               {{item._id.year}}-{{item._id.month}}-{{item._id.dayOfMonth}}
             </td>
-            <td>{{item.count | number}} urls</td>
+            <td>{{item.count | number}} clicks</td>
           </tr>
         </table>
       </div>
@@ -34,6 +34,17 @@
     </div>
     <div class="col-sm-6 platforms">
       <label class="control-label">Platforms</label>
+    </div>
+  </div>
+</div>
+
+<div class="body container">
+  <div class="row">
+    <div class="col-sm-6 reffer">
+      <label class="control-label">Reffer</label>
+    </div>
+    <div class="col-sm-6 remote-ip">
+      <label class="control-label">Remote IP</label>
     </div>
   </div>
 </div>
