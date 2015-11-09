@@ -7,3 +7,7 @@ angular.module 'nodeDdShortenerApp'
     return  unless data
     $scope.totalUrl = data.total
     $scope.history = data.history
+
+    $http.get "/api/1.0/history/#{$stateParams.shortenId}/clicks"
+    .success (data, status) ->
+      $scope.clickList = data

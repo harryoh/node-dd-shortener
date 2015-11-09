@@ -10,6 +10,16 @@
   <div class="row">
     <div class="col-sm-6 created">
       <label class="control-label">Clicks</label>
+      <div class="row">
+        <table>
+          <tr data-ng-repeat="item in clickList">
+            <td style="min-width:100px">
+              {{item._id.year}}-{{item._id.month}}-{{item._id.dayOfMonth}}
+            </td>
+            <td>{{item.count | number}} clicks</td>
+          </tr>
+        </table>
+      </div>
     </div>
     <div class="col-sm-6 browsers">
       <label class="control-label">Browsers</label>
