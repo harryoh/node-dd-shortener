@@ -15,6 +15,7 @@ exports.list = (req, res) ->
       res.status(200).json _.merge result, {history: history}
 
 exports.created = (req, res) ->
+  res.status(200).end()
 ###  MONGO Query
 db.getCollection('urls').aggregate([
     {
@@ -36,7 +37,19 @@ db.getCollection('urls').aggregate([
     }
 }])
 ###
-  res.status(200).end()
+
+exports.detail = (req, res) ->
+  Logger.count (err, length) ->
+    return handleError res, err  if err
+
+    result = {total: length}
+    query = Logger.find
+      shortenId: req.params.shortenId
+    .sort({createdAt: -1}).limit(20)
+    query.exec (err, history) ->
+      return handleError res, err  if err
+      res.status(200).json _.merge result, {history: history}
 
 handleError = (res, err) ->
   res.status(500).send err
+
