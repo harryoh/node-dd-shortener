@@ -94,7 +94,6 @@ exports.platform = (req, res) ->
     return handleError res, err  if err
     return res.status(200).end()  unless length
 
-    query = 
     Logger.aggregate [
       {
         $group:
@@ -218,7 +217,6 @@ exports.detail_platform = (req, res) ->
     return handleError res, err  if err
     return res.status(200).end()  unless length
 
-    query = 
     Logger.aggregate [
       {
         $match: shortenId: req.params.shortenId
@@ -252,7 +250,6 @@ exports.detail_referrer = (req, res) ->
     return handleError res, err  if err
     return res.status(200).end()  unless length
 
-    query = 
     Logger.aggregate [
       {
         $match: shortenId: req.params.shortenId
@@ -286,7 +283,6 @@ exports.detail_remoteip = (req, res) ->
     return handleError res, err  if err
     return res.status(200).end()  unless length
 
-    query = 
     Logger.aggregate [
       {
         $match: shortenId: req.params.shortenId
