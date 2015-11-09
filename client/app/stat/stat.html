@@ -8,7 +8,7 @@
 
 <div class="body container">
   <div class="row">
-    <div class="col-sm-6 created">
+    <div class="col-sm-6 created" ng-controller="CreatedCtrl">
       <label class="control-label">Created</label>
       <div class="row">
         <table>
@@ -21,19 +21,49 @@
         </table>
       </div>
     </div>
-    <div class="col-sm-6 browsers">
+    <div class="col-sm-6 browsers" ng-controller="BrowserCtrl">
       <label class="control-label">Browsers</label>
+      <div class="row">
+        <table>
+          <tr data-ng-repeat="item in browserList">
+            <td style="min-width:100px">
+              {{item.browser}}
+            </td>
+            <td>{{item.percentage | number}}%</td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </div>
 
 <div class="body container">
   <div class="row">
-    <div class="col-sm-6 contries">
+    <div class="col-sm-6 contries" ng-controller="CountryCtrl">
       <label class="control-label">Contries</label>
+      <div class="row">
+        <table>
+          <tr data-ng-repeat="item in countryList">
+            <td style="min-width:100px">
+              {{item.country || 'unknown'}}
+            </td>
+            <td>{{item.percentage | number}}%</td>
+          </tr>
+        </table>
+      </div>
     </div>
-    <div class="col-sm-6 platforms">
+    <div class="col-sm-6 platforms" ng-controller="PlatformCtrl">
       <label class="control-label">Platforms</label>
+      <div class="row">
+        <table>
+          <tr data-ng-repeat="item in platformList">
+            <td style="min-width:100px">
+              {{item.platform || 'unknown'}}
+            </td>
+            <td>{{item.percentage | number}}%</td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </div>
