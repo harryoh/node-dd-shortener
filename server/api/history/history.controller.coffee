@@ -2,6 +2,7 @@
 
 _ = require 'lodash'
 Logger = require '../../components/logger/logger.model'
+Url = require '../url/url.model'
 config = require '../../config/environment'
 
 exports.list = (req, res) ->
@@ -15,7 +16,16 @@ exports.list = (req, res) ->
       res.status(200).json _.merge result, {history: history}
 
 exports.created = (req, res) ->
-  res.status(200).end()
+  Url.aggregate [
+    $group:
+      _id:
+        year: $year: "$createdAt"
+        month: $month: "$createdAt"
+        dayOfMonth: $dayOfMonth: "$createdAt"
+      count: $sum: 1
+  ], (err, result) ->
+    return handleError res, err  if err
+    res.status(200).json result
 ###  MONGO Query
 db.getCollection('urls').aggregate([
     {
@@ -49,6 +59,21 @@ exports.detail = (req, res) ->
     query.exec (err, history) ->
       return handleError res, err  if err
       res.status(200).json _.merge result, {history: history}
+
+exports.clicks = (req, res) ->
+  Logger.aggregate [{
+    $match:
+      shortenId: req.params.shortenId
+  }, {  
+    $group:
+      _id:
+        year: $year: "$createdAt"
+        month: $month: "$createdAt"
+        dayOfMonth: $dayOfMonth: "$createdAt"
+      count: $sum: 1
+  }], (err, result) ->
+    return handleError res, err  if err
+    res.status(200).json result
 
 handleError = (res, err) ->
   res.status(500).send err
