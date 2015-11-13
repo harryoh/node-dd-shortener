@@ -58,13 +58,13 @@ useLru: true
 
 * Requests per second
 
-|     |  No Cache  |    LRU     |   Redis    | LRU + Redis |
-|-----|------------|------------|------------|-------------|
-|  1  | 256.60 Sec | 315.09 Sec | 304.27 Sec | 322.53 Sec  |
-|  2  | 249.84 Sec | 435.98 Sec | 414.80 Sec | 435.63 Sec  |
-|  3  | 283.43 Sec | 381.18 Sec | 360.94 Sec | 388.10 Sec  |
-|  4  | 248.32 Sec | 438.30 Sec | 416.58 Sec | 448.97 Sec  |
-|  5  | 286.90 Sec | 377.60 Sec | 360.34 Sec | 382.03 Sec  |
+|     |   No Cache   |     LRU      |    Redis     |  LRU + Redis  |
+|-----|--------------|--------------|--------------|---------------|
+|  1  | 256.60 times | 315.09 times | 304.27 times | 322.53 times  |
+|  2  | 249.84 times | 435.98 times | 414.80 times | 435.63 times  |
+|  3  | 283.43 times | 381.18 times | 360.94 times | 388.10 times  |
+|  4  | 248.32 times | 438.30 times | 416.58 times | 448.97 times  |
+|  5  | 286.90 times | 377.60 times | 360.34 times | 382.03 times  |
 
 * Time per request
 
